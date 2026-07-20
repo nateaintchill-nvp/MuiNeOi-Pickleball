@@ -2,293 +2,524 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NVP. | Báo Giá Private Coaching</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Tối ưu viewport cho mobile, ngăn tình trạng zoom lỗi -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>Pickleball Rules - Cẩm Nang Luật Chơi</title>
+    <!-- Import Font Montserrat -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --gold: #d4af37;
-            --premium-gold: #ffdf00;
-            --dark-bg: #050505;
-            --card-bg: #121212;
-            --text-light: #f4f4f4;
-            --text-dim: #a0a0a0;
+            --primary: #0F172A;
+            --accent: #D9F136; /* Màu xanh bóng Pickleball */
+            --accent-dark: #A3B91C;
+            --bg-color: #F8FAFC;
+            --card-bg: #FFFFFF;
+            --text-main: #334155;
+            --text-muted: #64748B;
         }
 
         body {
-            background-color: var(--dark-bg);
-            color: var(--text-light);
-            font-family: 'Montserrat', sans-serif;
-            margin: 0; padding: 0; line-height: 1.6;
-            overflow-x: hidden; 
+            /* Font stack chuẩn chống lỗi hiển thị trên mọi HĐH, đặc biệt là iOS/macOS */
+            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.7;
+            margin: 0;
+            padding: 40px 20px;
+            transition: background-color 0.3s ease;
+            
+            /* Tối ưu render chữ sắc nét trên iOS/macOS */
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            -webkit-text-size-adjust: 100%;
         }
 
-        /* Tối ưu hóa khi xuất file PDF */
-        @media print {
-            body { background-color: #000; color: #fff; }
-            .container { padding: 20px 0; }
-            .card, .offline-section { page-break-inside: avoid; border: 1px solid #444; }
-            header { height: auto !important; padding: 40px 20px !important; background: #000 !important; }
+        body.lang-en .vi { display: none; }
+        body.lang-vi .en { display: none; }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
         }
 
-        /* Header Logo nằm góc trái trên cùng */
-        header {
-            height: 40vh; 
-            display: flex; 
-            flex-direction: column; 
-            justify-content: flex-start; 
-            align-items: flex-start;     
-            padding: 40px 5%;            
-            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.9)), url('https://images.unsplash.com/photo-1571902943202-507ec2618e8f?auto=format&fit=crop&w=1350&q=80');
-            background-size: cover; 
-            background-position: center; 
-            border-bottom: 2px solid var(--gold);
-        }
-
-        .header-logo { margin-top: 10px; }
-        .header-logo h1 { font-size: clamp(2.5rem, 8vw, 4rem); color: var(--gold); margin: 0; letter-spacing: 4px; text-align: left; }
-        .header-logo p { letter-spacing: 2px; text-transform: uppercase; color: var(--text-dim); font-size: 0.85rem; margin-top: 5px; text-align: left; font-weight: 600; }
-
-        .container { max-width: 1100px; margin: 0 auto; padding: 50px 20px; }
-
-        .time-notice {
-            background: rgba(212, 175, 55, 0.1); border: 1px solid var(--gold);
-            padding: 25px; text-align: center; margin-bottom: 60px; border-radius: 8px; font-size: 1.1rem;
-        }
-        .time-notice b { color: var(--gold); }
-
-        /* Túi đồ */
-        .bag-section { margin-bottom: 80px; text-align: center; }
-        .bag-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 25px; margin-top: 40px; }
-        .bag-item { background: #0a0a0a; padding: 30px; border-radius: 10px; border: 1px dashed #333; }
-        .bag-item span { display: block; font-size: 2.5rem; margin-bottom: 15px; }
-        .bag-item h4 { margin: 10px 0; color: var(--gold); font-size: 1.2rem; }
-        .bag-item p { font-size: 0.9rem; color: var(--text-dim); line-height: 1.6; }
-
-        /* Gói tập chung */
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-bottom: 40px; }
-        .card { background: var(--card-bg); padding: 40px 30px; border-radius: 4px; border: 1px solid #222; position: relative; }
-        .card h3 { color: #fff; font-size: 1.6rem; margin: 0 0 10px 0; text-transform: uppercase; }
-        .price { font-size: 1.8rem; font-weight: 800; color: var(--gold); margin-bottom: 20px; }
-        .features { list-style: none; padding: 0; color: var(--text-dim); font-size: 0.95rem; }
-        .features li { margin-bottom: 12px; padding-left: 20px; position: relative; }
-        .features li::before { content: "•"; color: var(--gold); position: absolute; left: 0; }
-
-        /* Bảng giá Online */
-        .table-container { width: 100%; border-radius: 8px; border: 1px solid #222; overflow: hidden; background: var(--card-bg); margin-bottom: 80px; }
-        table { width: 100%; border-collapse: collapse; }
-        th, td { padding: 20px 15px; border-bottom: 1px solid #222; text-align: center; }
-        th { background: #000; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; font-size: 0.9rem; }
-        th:first-child, td:first-child { text-align: left; }
-        .sub-th { display: block; font-size: 0.7rem; font-weight: 400; color: var(--text-dim); text-transform: none; margin-top: 4px; }
-
-        /* Lời dẫn phân khúc sản phẩm */
-        .section-desc {
-            text-align: center; color: var(--text-dim); font-style: italic; 
-            margin: -30px auto 40px auto; font-size: 0.95rem; max-width: 780px; 
-            line-height: 1.7; padding: 0 15px; box-sizing: border-box;
-        }
-        .section-desc b { color: var(--gold); }
-
-        /* NVP Offline Sessions Style */
-        .offline-section {
-            margin: 80px 0;
-            background: linear-gradient(145deg, #0f0f0f 0%, #1a1a1a 100%);
-            border: 2px solid var(--premium-gold);
-            border-radius: 12px;
-            padding: 50px 30px;
+        .header-section {
             text-align: center;
-            box-shadow: 0 0 30px rgba(255, 223, 0, 0.1);
+            margin-bottom: 50px;
+            padding: 50px 20px;
+            background: var(--primary);
+            border-radius: 30px;
+            color: white;
+            box-shadow: 0 20px 40px rgba(15, 23, 42, 0.15);
+            position: relative;
+            overflow: hidden;
         }
-        .offline-badge {
-            background: var(--premium-gold); color: #000;
-            padding: 5px 20px; border-radius: 50px;
-            font-weight: 800; font-size: 0.8rem; text-transform: uppercase;
-            display: inline-block; margin-bottom: 20px;
-        }
-        .offline-price { font-size: 2.5rem; font-weight: 900; color: #fff; margin: 20px 0; line-height: 1.2; }
-        .offline-note { font-style: italic; color: var(--gold); font-size: 0.9rem; margin-bottom: 30px; }
 
-        /* Liên hệ */
-        .contact-section { text-align: center; padding: 80px 20px; background: #0a0a0a; border-top: 1px solid #222; }
-        .contact-title { font-size: 3rem; color: var(--gold); margin-bottom: 20px; text-transform: uppercase; font-weight: 800; letter-spacing: 3px; }
-        .contact-info { font-size: 1.2rem; color: var(--text-dim); margin-bottom: 5px; }
-        .phone-number { display: block; font-size: 2.5rem; font-weight: 800; color: var(--gold); margin-bottom: 40px; }
+        .header-section::after {
+            content: '';
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 150px;
+            height: 150px;
+            background: var(--accent);
+            border-radius: 50%;
+            filter: blur(50px);
+            opacity: 0.3;
+        }
+
+        .header-section h1 {
+            font-size: 2.8em;
+            font-weight: 800;
+            margin: 0;
+            letter-spacing: -0.5px;
+        }
+
+        .header-section h1 span {
+            color: var(--accent);
+        }
+
+        .header-section p {
+            font-size: 1.1em;
+            color: #CBD5E1;
+            max-width: 600px;
+            margin: 15px auto 0;
+            font-weight: 400;
+        }
+
+        .rule-card {
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: 40px;
+            margin-bottom: 35px;
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.05);
+            border: 1px solid rgba(0,0,0,0.03);
+            position: relative;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .rule-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px -15px rgba(0,0,0,0.08);
+        }
+
+        .rule-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 8px;
+            height: 100%;
+            background: var(--accent);
+            border-radius: 24px 0 0 24px;
+        }
+
+        .rule-card h2 {
+            font-size: 1.5em;
+            color: var(--primary);
+            margin-top: 0;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-weight: 700;
+        }
+
+        .rule-card h2 .number-badge {
+            background: var(--primary);
+            color: var(--accent);
+            width: 40px;
+            height: 40px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            font-size: 0.9em;
+            font-weight: 800;
+            flex-shrink: 0; /* Giữ nguyên kích thước trên mobile */
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        ul li {
+            position: relative;
+            padding-left: 32px;
+            margin-bottom: 18px;
+            font-size: 1.05em;
+            font-weight: 500;
+        }
+
+        ul li::before {
+            content: '🎾';
+            position: absolute;
+            left: 0;
+            top: 2px;
+            font-size: 1em;
+        }
+
+        ul li strong {
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .image-showcase {
+            margin-top: 30px;
+            border-radius: 16px;
+            overflow: hidden;
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            background: #F8FAFC;
+            padding: 20px;
+            border: 1px solid #E2E8F0;
+        }
+
+        .image-showcase img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+            transition: transform 0.3s ease;
+            object-fit: contain;
+        }
+
+        .image-showcase img:hover {
+            transform: scale(1.02);
+        }
+
+        .flex-half img {
+            width: calc(50% - 10px);
+        }
+
+        .alert-box {
+            background: #FEF3C7;
+            border-left: 4px solid #F59E0B;
+            padding: 16px 20px;
+            border-radius: 12px;
+            color: #92400E;
+            font-weight: 600;
+            margin-bottom: 25px;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            font-size: 0.95em;
+        }
+
+        /* Floating Button Styling */
+        .btn-translate {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            background: rgba(15, 23, 42, 0.9);
+            color: var(--accent);
+            border: 2px solid var(--accent);
+            padding: 14px 24px;
+            border-radius: 50px;
+            font-family: inherit;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(15, 23, 42, 0.25);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 9999;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px); /* Dành riêng cho Safari/iOS */
+        }
+
+        .btn-translate:hover {
+            transform: translateY(-5px) scale(1.03);
+            box-shadow: 0 15px 35px rgba(15, 23, 42, 0.35);
+            background: var(--accent);
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .btn-translate .icon {
+            font-size: 1.2em;
+        }
         
-        footer { text-align: center; padding: 40px; color: #444; font-size: 0.85rem; letter-spacing: 1px; }
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-bottom: 40px;
+            color: var(--text-muted);
+            font-weight: 500;
+            font-size: 0.9em;
+        }
 
-        .mobile-br { display: none; }
+        /* Responsive - Tối ưu hiển thị cho Mobile và Tablet */
+        @media (max-width: 768px) {
+            body {
+                padding: 20px 12px;
+            }
 
-        /* MOBILE OPTIMIZATION */
-        @media (max-width: 480px) {
-            .mobile-br { display: block; }
-            .card h3 .vip-time { display: block; margin-top: 5px; font-size: 1rem; }
+            .header-section {
+                padding: 35px 20px;
+                margin-bottom: 30px;
+                border-radius: 24px;
+            }
 
-            /* Bảng giá chuẩn Mobile */
-            table { table-layout: fixed; font-size: 0.78rem; }
-            th, td { padding: 15px 5px; }
-            th:nth-child(1), td:nth-child(1) { width: 33%; padding-left: 10px; }
-            th:nth-child(2), td:nth-child(2) { width: 30%; }
-            th:nth-child(3), td:nth-child(3) { width: 37%; text-align: right; padding-right: 10px; }
-            .mobile-nowrap { white-space: nowrap; }
-            .sub-th { font-size: 0.58rem; }
+            .header-section h1 {
+                font-size: 2.2em;
+            }
 
-            /* Liên hệ */
-            .contact-title { font-size: 2rem; line-height: 1.2; margin-bottom: 25px; }
-            .phone-number { font-size: 1.8rem; margin-bottom: 30px; }
-            
-            .offline-price { font-size: 1.8rem; }
-            .bag-grid { grid-template-columns: 1fr; }
-            header { padding: 30px 20px; }
-            .container { padding: 40px 15px; }
-            
-            .section-desc { margin: -30px auto 30px auto; font-size: 0.88rem; line-height: 1.6; }
+            .header-section p {
+                font-size: 1em;
+            }
+
+            .rule-card {
+                padding: 25px 20px;
+                margin-bottom: 20px;
+                border-radius: 20px;
+            }
+
+            .rule-card::before {
+                width: 6px;
+                border-radius: 20px 0 0 20px;
+            }
+
+            .rule-card h2 {
+                font-size: 1.3em;
+                gap: 12px;
+            }
+
+            ul li {
+                font-size: 1em;
+                margin-bottom: 15px;
+                padding-left: 28px;
+            }
+
+            /* Xếp dọc hình ảnh trên mobile thay vì ép nhỏ 2 hình ngang nhau */
+            .image-showcase.flex-half {
+                flex-direction: column;
+            }
+
+            .flex-half img {
+                width: 100%;
+            }
+
+            /* Điều chỉnh Nút bấm cho Mobile: nhỏ gọn, không cản trở góc nhìn */
+            .btn-translate {
+                bottom: 25px;
+                right: 20px;
+                padding: 12px 20px;
+                font-size: 14px;
+            }
         }
     </style>
 </head>
-<body>
+<body class="lang-vi">
 
-    <header>
-        <div class="header-logo">
-            <h1>NVP.</h1>
-            <p>Nate Vu Private Coaching</p>
-        </div>
-    </header>
+    <button class="btn-translate" onclick="toggleLang()">
+        <span class="icon">🌍</span>
+        <span id="btn-text">Switch to English</span>
+    </button>
 
     <div class="container">
-        <div class="time-notice">
-            <b>Cam kết NVP:</b> Chúng tôi tính phí theo buổi tập, <b>không giới hạn thời gian</b> cho mỗi buổi. 
-            Phiên tập chỉ kết thúc khi bạn hoàn thành trọn vẹn mục tiêu giáo án đề ra cho ngày hôm đó.
+        
+        <!-- Header -->
+        <div class="header-section">
+            <h1 class="vi">Luật Chơi <span>Pickleball</span></h1>
+            <h1 class="en">Pickleball <span>Rules</span></h1>
+            <p class="vi">Bản hướng dẫn chi tiết, trực quan và chuyên nghiệp dành cho người mới bắt đầu.</p>
+            <p class="en">The most detailed, visual, and professional guide for beginners.</p>
         </div>
 
-        <div class="bag-section">
-            <h2 style="color:var(--gold); text-transform: uppercase; font-size: 1.8rem; letter-spacing: 2px;">Trong Túi Đồ Của NVP Có Gì?</h2>
-            <div class="bag-grid">
-                <div class="bag-item">
-                    <span>📋</span>
-                    <h4>Lộ Trình Riêng</h4>
-                    <p>Khách đăng ký sẽ nhận được Lịch ăn, Lịch tập & Bảng theo dõi thông số cá nhân hóa.</p>
-                </div>
-                <div class="bag-item">
-                    <span>📱</span>
-                    <h4>Kết Nối 24/7</h4>
-                    <p>Sử dụng Facebook Messenger & Zalo để hỗ trợ, nhắc nhở và giải đáp thắc mắc hàng ngày.</p>
-                </div>
-                <div class="bag-item">
-                    <span>🎥</span>
-                    <h4>Phòng Tập Ảo</h4>
-                    <p>Google Meet (Video Call) để cùng đi tập và sửa lỗi kỹ thuật trực tiếp tại địa điểm của bạn.</p>
-                </div>
-                <div class="bag-item">
-                    <span>💪</span>
-                    <h4>Nền Tảng Vững</h4>
-                    <p>Kiến thức chuẩn xác giúp bạn duy trì thói quen tập luyện dễ dàng bằng chính thực lực của mình.</p>
-                </div>
-            </div>
-        </div>
-
-        <h2 style="text-align: center; color: var(--gold); text-transform: uppercase; margin-bottom: 40px; letter-spacing: 2px;">Lộ Trình Trực Tuyến</h2>
-        <p class="section-desc">
-            *Lộ trình trọn gói bán <b>sự đồng hành toàn diện</b>. Dành riêng cho những anh em thực sự cần một người bạn đồng hành sát cánh, thiết kế và xoay sở giáo án tối ưu trong mọi hoàn cảnh biến động của cuộc sống.
-        </p>
-        <div class="grid">
-            <div class="card">
-                <h3>Khởi Đầu <span class="vip-time">(1 Tháng)</span></h3>
-                <div class="price">5.000.000₫</div>
-                <ul class="features">
-                    <li>Không giới hạn thời gian mỗi buổi tập</li>
-                    <li>Xây dựng kỹ thuật & tư duy chuẩn</li>
-                    <li>Cá nhân hóa lịch tập & dinh dưỡng</li>
-                    <li>Hướng dẫn tự phục hồi cơ bản</li>
-                </ul>
-            </div>
-            <div class="card" style="border-color: var(--gold);">
-                <h3>Hội Viên V.I.P <span class="vip-time">(3 Tháng)</span></h3>
-                <div class="price">12.900.000₫</div>
-                <ul class="features">
-                    <li>Không giới hạn thời gian mỗi buổi tập</li>
-                    <li>Người đồng hành (Companion) 24/7</li>
-                    <li>Lịch trình trọn gói 12 tuần liên tục</li>
-                    <li>Hỗ trợ thanh toán trả góp linh hoạt</li>
-                </ul>
-            </div>
-        </div>
-
-        <h2 style="text-align: center; color: var(--gold); text-transform: uppercase; margin-bottom: 40px; letter-spacing: 2px;">Gói Tập Theo Buổi (Online)</h2>
-        <p class="section-desc">
-            *Gói tập lẻ bán <b>sự đồng hành trên từng phiên tập</b>. Bạn sẽ được giám sát và hiệu chỉnh kỹ thuật nghiêm ngặt trong phòng tập, nhưng cần có tinh thần tự giác cao để tự vận hành 50% khối lượng còn lại trong phần dinh dưỡng.
-        </p>
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Gói Buổi<br><span class="sub-th">(Không giới hạn giờ)</span></th>
-                        <th class="mobile-nowrap">Đơn Giá<br><span class="sub-th">/ Buổi</span></th>
-                        <th>Tổng <br class="mobile-br"> Đầu Tư</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr><td>05 Buổi</td><td>490.000₫</td><td>2.450.000₫</td></tr>
-                    <tr><td>15 Buổi</td><td>350.000₫</td><td>5.250.000₫</td></tr>
-                    <tr><td>30 Buổi</td><td>300.000₫</td><td>9.000.000₫</td></tr>
-                    <tr><td>60 Buổi</td><td>250.000₫</td><td>15.000.000₫</td></tr>
-                    <tr><td>100 Buổi</td><td>220.000₫</td><td>22.000.000₫</td></tr>
-                </tbody>
-            </table>
-        </div>
-
-        <h2 style="text-align: center; color: var(--gold); text-transform: uppercase; margin-bottom: 40px; letter-spacing: 2px;">Gói Combo Lịch Lẻ</h2>
-        <p class="section-desc">
-            *Gói combo lịch lẻ bán <b>kiến thức cốt lõi và tư duy vận hành</b>. Chúng tôi vạch sẵn cho bạn bản đồ chuẩn xác nhất, đổi lại mô hình này đòi hỏi một sự kiên trì và tính kỷ luật tự giác cực kỳ lớn từ chính bản thân bạn.
-        </p>
-        <div class="grid" style="margin-bottom: 80px;">
-            <div class="card">
-                <h3>Combo Cơ Bản & Duy Trì</h3>
-                <div class="price">1.100.000₫</div>
-                <ul class="features">
-                    <li><strong>Lịch dinh dưỡng cơ bản:</strong> Định lượng calo/macro cố định, phục vụ mục tiêu duy trì và tạo thói quen kỷ luật.</li>
-                    <li><strong>Lịch tập cố định trong tuần:</strong> Thiết lập giáo án bài tập chuẩn phom bài bản.</li>
-                    <li><strong>Giải thích chi tiết:</strong> Làm rõ tư duy vận động để học viên tự tin thực thi chuẩn xác.</li>
-                </ul>
-            </div>
-            <div class="card" style="border-color: var(--gold);">
-                <h3>Combo Chi Tiết & Định Hướng</h3>
-                <div class="price">3.100.000₫</div>
-                <ul class="features">
-                    <li><strong>Lịch dinh dưỡng chi tiết:</strong> Đo lường sát thực phẩm, đi kèm lộ trình tổng quan định hướng lâu dài, hạn chế tối đa việc chững cân.</li>
-                    <li><strong>Lịch tập cố định lâu dài:</strong> Giáo án phân hóa khoa học cho sự phát triển hình thể bền vững.</li>
-                    <li><strong>Giải thích chuyên sâu:</strong> Phân tích cặn kẽ nguyên lý thực phẩm và bản chất vận động cho con người.</li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="offline-section">
-            <div class="offline-badge">Số lượng giới hạn: 5 người / quý</div>
-            <h2 style="color: var(--premium-gold); text-transform: uppercase; font-size: 2rem; margin: 0;">NVP Offline Sessions</h2>
-            <p style="color: var(--text-dim); margin-top: 15px; font-style: italic; font-size: 0.95rem; max-width: 780px; margin-left: auto; margin-right: auto; line-height: 1.7; padding: 0 15px; box-sizing: border-box;">
-                *Đặc quyền huấn luyện trực tiếp 1-1 cùng Nate Vu. Phân khúc này bán <b style="color: var(--premium-gold);">sự đồng hành trực diện và nhiệt huyết tuyệt đối</b>. Dành riêng cho những bạn cần thay đổi bản thân một cách quyết liệt, mưu cầu một sự lột xác khốc liệt và cần một sự hiện diện bằng xương bằng thịt bên cạnh để sửa sai, đẩy giới hạn.
-            </p>
-            <div class="offline-price" style="margin-top: 15px;">20.000.000₫ <br class="mobile-br"> <span style="font-size: 1.2rem; color: var(--text-dim); font-weight: 400;">/ 3 Tháng</span></div>
-            <p class="offline-note">*Số buổi và thời gian tập phụ thuộc vào giáo án mục tiêu của khách hàng</p>
-            <ul class="features" style="max-width: 500px; margin: 0 auto; text-align: left;">
-                <li>Chỉ nhận học viên cam kết tập luyện từ 3 buổi/tuần trở lên</li>
-                <li>Huấn luyện trực tiếp, chỉnh sửa form dáng và cảm nhận cơ bắp</li>
-                <li>Tầm soát hình thể và thiết kế lộ trình chuyên sâu nhất</li>
-                <li>Hỗ trợ song song Online Training khi phát sinh khoảng cách tập luyện</li>
-                <li>Hỗ trợ tư vấn Supplement và dinh dưỡng sát sao 24/7</li>
+        <!-- Section 1 -->
+        <div class="rule-card">
+            <h2><span class="number-badge">1</span> 
+                <span class="vi">Kích Thước Sân & Các Khu Vực Trọng Điểm</span>
+                <span class="en">Court Dimensions & Key Areas</span>
+            </h2>
+            <ul>
+                <li>
+                    <span class="vi"><strong>Kích thước tổng thể:</strong> Sân có hình chữ nhật, rộng 20 ft (6.1m) và dài 44 ft (13.4m), áp dụng chung cho cả đánh đơn và đánh đôi.</span>
+                    <span class="en"><strong>Overall dimensions:</strong> The court is rectangular, 20 ft (6.1m) wide and 44 ft (13.4m) long, applicable for both singles and doubles.</span>
+                </li>
+                <li>
+                    <span class="vi"><strong>Non-Volley Zone (Kitchen):</strong> Khu vực sát lưới, rộng 7 ft (2.1m) mỗi bên. Bạn <strong>tuyệt đối không được</strong> bước vào hoặc dẫm vạch khu vực này khi thực hiện cú đánh vô-lê (volley).</span>
+                    <span class="en"><strong>Non-Volley Zone (Kitchen):</strong> The area adjacent to the net, 7 ft (2.1m) wide on each side. You are <strong>strictly forbidden</strong> to step into or on this line while hitting a volley.</span>
+                </li>
+                <li>
+                    <span class="vi"><strong>Khu vực giao bóng:</strong> Chia thành ô giao bóng Trái (Left) và Phải (Right), nằm sau vạch Kitchen.</span>
+                    <span class="en"><strong>Service Courts:</strong> Divided into Left Service Court and Right Service Court, located behind the Kitchen line.</span>
+                </li>
             </ul>
+            <div class="image-showcase">
+                <img src="1000001133.jpg" alt="Court Dimensions">
+            </div>
         </div>
+
+        <!-- Section 2 -->
+        <div class="rule-card">
+            <h2><span class="number-badge">2</span> 
+                <span class="vi">Quy Định Giao Bóng (Serve)</span>
+                <span class="en">Serving Rules (The Serve)</span>
+            </h2>
+            <ul>
+                <li>
+                    <span class="vi"><strong>Chuyển động tay:</strong> Phải là cú đánh dưới tay (underhand). Cánh tay vung theo hình cung từ dưới lên.</span>
+                    <span class="en"><strong>Arm motion:</strong> Must be an underhand motion. The arm must swing in an upward arc.</span>
+                </li>
+                <li>
+                    <span class="vi"><strong>Vị trí tiếp xúc:</strong> Điểm tiếp xúc giữa mặt vợt và bóng phải nằm <strong>dưới thắt lưng</strong>.</span>
+                    <span class="en"><strong>Contact point:</strong> The point of contact between paddle and ball must be <strong>below the waist</strong>.</span>
+                </li>
+                <li>
+                    <span class="vi"><strong>Vị trí đầu vợt:</strong> Đầu vợt khi chạm bóng phải thấp hơn cổ tay.</span>
+                    <span class="en"><strong>Paddle head:</strong> The highest point of the paddle head must not be above the highest part of the wrist.</span>
+                </li>
+                <li>
+                    <span class="vi"><strong>Hướng & Điểm rơi:</strong> Giao bóng chéo sân. Bóng phải bay qua khỏi vùng Kitchen và không được chạm vạch Kitchen.</span>
+                    <span class="en"><strong>Direction & Landing:</strong> Serve diagonally. The ball must clear the Non-Volley Zone and cannot land on the Kitchen line.</span>
+                </li>
+            </ul>
+            <div class="image-showcase flex-half">
+                <img src="1000001134.jpg" alt="Serve Posture">
+                <img src="1000001135.jpg" alt="Diagonal Serve">
+            </div>
+        </div>
+
+        <!-- Section 3 -->
+        <div class="rule-card">
+            <h2><span class="number-badge">3</span> 
+                <span class="vi">Quy Tắc "Hai Lần Chạm" (Two-Bounce Rule)</span>
+                <span class="en">The "Two-Bounce" Rule</span>
+            </h2>
+            <div class="alert-box">
+                <span class="vi">⚠️ Luật này giúp ngăn chặn những cú đập bóng áp đảo ngay từ nhịp đầu tiên.</span>
+                <span class="en">⚠️ This rule extends rallies and prevents quick smash finishes on the first hits.</span>
+            </div>
+            <ul>
+                <li>
+                    <span class="vi"><strong>Nhịp 1:</strong> Đội nhận bóng <strong>phải để bóng nảy 1 lần</strong> trên sân mình rồi mới được đánh trả.</span>
+                    <span class="en"><strong>Bounce 1:</strong> The receiving team <strong>must let the serve bounce</strong> once before returning it.</span>
+                </li>
+                <li>
+                    <span class="vi"><strong>Nhịp 2:</strong> Khi bóng quay về, đội giao bóng <strong>cũng phải để bóng nảy 1 lần</strong> trước khi đánh trả lại.</span>
+                    <span class="en"><strong>Bounce 2:</strong> When the ball is returned, the serving team <strong>must also let it bounce</strong> once before hitting.</span>
+                </li>
+                <li>
+                    <span class="vi"><strong>Từ nhịp thứ 3 trở đi:</strong> Cả hai đội được tự do đánh vô-lê (không cần nảy) hoặc đánh bóng nảy.</span>
+                    <span class="en"><strong>From the 3rd hit onwards:</strong> Both teams can freely choose to volley the ball out of the air or play it off a bounce.</span>
+                </li>
+            </ul>
+            <div class="image-showcase">
+                <img src="1000001139.jpg" alt="Two Bounce Rule Diagram">
+            </div>
+        </div>
+
+        <!-- Section 4 -->
+        <div class="rule-card">
+            <h2><span class="number-badge">4</span> 
+                <span class="vi">Tính Điểm & Vị Trí Giao Bóng</span>
+                <span class="en">Scoring & Serving Positions</span>
+            </h2>
+            <ul>
+                <li>
+                    <span class="vi"><strong>Ai được ghi điểm?</strong> Chỉ đội <strong>đang giữ quyền giao bóng</strong> mới có thể ghi điểm.</span>
+                    <span class="en"><strong>Who scores?</strong> Points are scored <strong>only by the serving team</strong>.</span>
+                </li>
+                <li>
+                    <span class="vi"><strong>Điều kiện thắng:</strong> Trận đấu kết thúc ở 11 điểm và phải thắng cách biệt ít nhất 2 điểm.</span>
+                    <span class="en"><strong>Winning conditions:</strong> Games are normally played to 11 points, win by 2.</span>
+                </li>
+                <li>
+                    <span class="vi"><strong>Vị trí đứng:</strong> Nếu điểm của đội giao bóng là <strong>Chẵn</strong> (0, 2, 4...) -> Giao bên Phải. Nếu <strong>Lẻ</strong> (1, 3, 5...) -> Giao bên Trái.</span>
+                    <span class="en"><strong>Position:</strong> If the serving team's score is <strong>Even</strong> (0, 2, 4...) -> Serve from Right. If <strong>Odd</strong> (1, 3, 5...) -> Serve from Left.</span>
+                </li>
+                <li>
+                    <span class="vi"><strong>Cách hô điểm:</strong> "Điểm đội giao - Điểm đội nhận - Người giao thứ mấy (1 hoặc 2)".</span>
+                    <span class="en"><strong>Calling the score:</strong> "Server score - Receiver score - Server number (1 or 2)".</span>
+                </li>
+            </ul>
+            <div class="image-showcase">
+                <img src="1000001136.jpg" alt="Scoring and Positions">
+            </div>
+        </div>
+
+        <!-- Section 5 -->
+        <div class="rule-card">
+            <h2><span class="number-badge">5</span> 
+                <span class="vi">Quyết Định Bóng Trong/Ngoài (Line Calls)</span>
+                <span class="en">Line Calls (In or Out)</span>
+            </h2>
+            <ul>
+                <li>
+                    <span class="vi"><strong>Bóng TRONG (IN):</strong> Bóng nằm trọn trong sân hoặc chạm dù chỉ 1 milimet vào vạch kẻ (trừ vạch Kitchen khi giao bóng). Khi nghi ngờ, hãy luôn tính là Bóng Trong.</span>
+                    <span class="en"><strong>IN Bounds:</strong> The ball lands inside or partially touches the line (except the Kitchen line on a serve). When in doubt, call it IN.</span>
+                </li>
+                <li>
+                    <span class="vi"><strong>Bóng NGOÀI (OUT):</strong> Quả bóng rơi hoàn toàn ra ngoài phần vạch kẻ sân, không có điểm tiếp xúc với vạch.</span>
+                    <span class="en"><strong>OUT of Bounds:</strong> The ball lands completely outside the court lines with zero contact on the line.</span>
+                </li>
+            </ul>
+            <div class="image-showcase">
+                <img src="1000001137.jpg" alt="Line Call Rules">
+            </div>
+        </div>
+
+        <!-- Section 6 -->
+        <div class="rule-card">
+            <h2><span class="number-badge">6</span> 
+                <span class="vi">Các Lỗi Phổ Biến (Faults)</span>
+                <span class="en">Common Faults to Avoid</span>
+            </h2>
+            <div class="alert-box">
+                <span class="vi">⚠️ Mắc Lỗi (Fault) sẽ khiến bạn mất quyền giao bóng hoặc mất điểm.</span>
+                <span class="en">⚠️ Committing a Fault results in a loss of serve or a point for the opponents.</span>
+            </div>
+            <ul>
+                <li>
+                    <span class="vi"><strong>Lỗi Giao Bóng:</strong> Tiếp xúc bóng cao hơn eo hoặc đầu vợt cao hơn cổ tay.</span>
+                    <span class="en"><strong>Serve Faults:</strong> Hitting the ball above the waist or paddle head above the wrist.</span>
+                </li>
+                <li>
+                    <span class="vi"><strong>Lỗi Kitchen:</strong> Dẫm vạch hoặc đứng trong Kitchen khi đánh vô-lê.</span>
+                    <span class="en"><strong>Kitchen Violations:</strong> Stepping on the line or inside the Kitchen while hitting a volley.</span>
+                </li>
+                <li>
+                    <span class="vi"><strong>Vi phạm 2 chạm:</strong> Đánh vô-lê khi bóng chưa nảy đủ 2 nhịp ở đầu pha bóng.</span>
+                    <span class="en"><strong>Two-Bounce Fault:</strong> Volleying before the ball has bounced once on each side initially.</span>
+                </li>
+                <li>
+                    <span class="vi"><strong>Lỗi Chạm Lưới:</strong> Quần áo, cơ thể hoặc vợt chạm lưới khi đang đánh.</span>
+                    <span class="en"><strong>Net Touches:</strong> Body, clothing, or paddle touching the net during the rally.</span>
+                </li>
+            </ul>
+            <div class="image-showcase">
+                <img src="1000001138.jpg" alt="Faults Summary">
+            </div>
+        </div>
+
+        <div class="footer">
+            <p class="vi">Tài liệu Pickleball Rules • Thiết kế thân thiện, tối ưu hiển thị Mobile</p>
+            <p class="en">Pickleball Rules • Designed for easy reading and mobile optimized</p>
+        </div>
+
     </div>
 
-    <div class="contact-section">
-        <h2 class="contact-title">BẮT ĐẦU <br class="mobile-br"> HÀNH TRÌNH</h2>
-        <p class="contact-info">Số điện thoại / Zalo:</p>
-        <span class="phone-number">0358 913 420</span>
-    </div>
-
-    <footer>
-        &copy; 2026 NVP - NATE VU PRIVATE COACHING.
-    </footer>
-
+    <!-- Script chuyển đổi ngôn ngữ -->
+    <script>
+        let isEnglish = false;
+        function toggleLang() {
+            isEnglish = !isEnglish;
+            document.body.className = isEnglish ? 'lang-en' : 'lang-vi';
+            
+            const btnText = document.getElementById('btn-text');
+            if (isEnglish) {
+                btnText.textContent = "Xem Tiếng Việt";
+            } else {
+                btnText.textContent = "Switch to English";
+            }
+        }
+    </script>
 </body>
 </html>
